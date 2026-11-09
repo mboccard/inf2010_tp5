@@ -21,20 +21,22 @@ public class AdjacencyListGraph extends Graph {
 
     @Override
     protected void addArc(int v1, int v2, int weight) {
+        neighbors.get(v1).put(v2, weight);
     }
 
     @Override
     public boolean hasEdge(int v1, int v2) {
-        return false;
+        return neighbors.get(v1).containsKey(v2);
     }
 
     @Override
     public int weight(int v1, int v2) {
-        return 0;
+        if (!hasEdge(v1, v2)) throw new NoSuchElementException();
+        return neighbors.get(v1).get(v2);
     }
 
     @Override
     public Collection<Integer> adj(int v) {
-        return new ArrayList<>();
+        return neighbors.get(v).keySet();
     }
 }

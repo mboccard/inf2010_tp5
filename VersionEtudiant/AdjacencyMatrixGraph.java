@@ -21,20 +21,26 @@ public class AdjacencyMatrixGraph extends Graph {
 
     @Override
     protected void addArc(int v1, int v2, int weight) {
+        w[v1][v2] = weight;
     }
 
     @Override
     public boolean hasEdge(int v1, int v2) {
-        return false;
+        return w[v1][v2] != NO_EDGE;
     }
 
     @Override
     public int weight(int v1, int v2) {
-        return 0;
+        if (!hasEdge(v1, v2)) throw new NoSuchElementException();
+        return w[v1][v2];
     }
 
     @Override
     public Collection<Integer> adj(int v) {
-        return new ArrayList<>();
+        Collection<Integer> adjacents = new ArrayList<>();
+        for (int j = 0; j < V; j++) {
+            if (hasEdge(v, j)) adjacents.add(j);
+        }
+        return adjacents;
     }
 }
