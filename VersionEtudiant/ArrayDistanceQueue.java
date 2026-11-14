@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 /**
  * Unsorted array: decreaseKey is O(1), extractMin scans all V slots: O(V).
@@ -20,11 +21,27 @@ public class ArrayDistanceQueue implements DistanceQueue {
 
     @Override
     public void decreaseKey(int v, long k) {
+        if (!queued[v]) {
+            queued[v] = true;
+            size++;
+        }
+        key[v] = k;
     }
 
     @Override
     public int extractMin() {
-        return -1;
+        int min = -1;
+        for (int v = 0 ; v < key.length ; v++) {
+            if (queued[v] && (min == -1 || key[v] < key[min])) {
+                min = v;
+            }
+        }
+        if (min == -1) {
+            throw new NoSuchElementException();
+        }
+        queued[min] = false;
+        size--;
+        return min;
     }
 
     @Override
